@@ -1,0 +1,166 @@
+<div class="container">
+    <div class="card">
+      <div class="box">
+        <div class="percent">
+          <svg>
+                        <circle cx="50%" cy="50%" r="47.5%"></circle>
+                      </svg>
+          <div class="number">
+            <h2>0<span>%</span></h2>
+          </div>
+        </div>
+        <h2 class="text"><span class="completed">0</span> of <span class="total">115</span> Goals Completed</h2>
+      </div>
+    </div>
+  </div>
+  Goals completed: <input class="goals" type='number' />
+  
+
+<script>
+document.querySelector('.goals').addEventListener('change', function() {
+  var goals = parseInt(this.value);
+  var circle = document.querySelector('circle');
+  var percentdiv = document.querySelector('.percent');
+  var completed = document.querySelector('.completed');
+  completed.innerHTML = goals;
+  var totaldiv = document.querySelector('.total');
+  var total = totaldiv.innerHTML;
+  var pc = goals * 100 / total;
+  var r = circle.getAttribute('r').replace('%', '') * percentdiv.clientWidth / 100; //actual radius of the circle
+  var c = Math.PI * (r * 2); //circumference is 2*pi*r
+
+  if (isNaN(goals)) {
+    pc = 100;
+  } else if (pc < 0) {
+    pc = 0;
+  } else if (pc > 100) {
+    pc = 100;
+  }
+  document.querySelector('.number h2').innerHTML = goals;
+
+  var length = pc * c / 100;
+
+  circle.style.strokeDasharray = length + ' ' + (c - length);
+  circle.style.strokeWidth = (length > 0) ? '5%' : 0;
+});
+</script>
+
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#progress-bar {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-51%, -50%);
+  width: 40%;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.container .card {
+  position: relative;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  border-radius: 4px;
+  text-align: center;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.container .card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.percent {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border-color: transparent;
+  border-width: 0;
+  border-style: none;
+  rbox-shadow: inset 0 0 50px #000;
+  background-image: radial-gradient(#444 0%, #222 70%, transparent 70%, transparent 100%);
+  rbackground: #222;
+  z-index: 1000;
+}
+
+.percent .number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.percent .number h2 {
+  color: #777;
+  font-weight: 700;
+  font-size: 40px;
+  transition: 0.5s;
+}
+
+.card:hover .percent .number h2 {
+  color: #fff;
+  font-size: 60px;
+}
+
+.percent .number h2 span {
+  font-size: 24px;
+  color: #777;
+  transition: 0.5s;
+}
+
+.card:hover .percent .number h2 span {
+  color: #fff;
+}
+
+.text {
+  position: relative;
+  color: #777;
+  margin-top: 40px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.5s;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+svg circle {
+  fill: none;
+  stroke-width: 0;
+  stroke-linecap: round;
+  stroke: #00ff43;
+}
+</style>
